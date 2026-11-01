@@ -1,0 +1,195 @@
+/* Mini-jeu : le champ (question 8) */
+.fd .an-hit { fill: transparent; }
+.an-shadow { fill: rgba(28, 48, 12, .34); transition: opacity 400ms; }
+.an-glow { fill: rgba(255, 243, 184, 0); transition: fill 300ms; }
+.an.is-hover .an-glow, .an:focus-visible .an-glow { fill: rgba(255, 243, 184, .6); }
+.an-lift { transition: transform 350ms var(--ease-out-expo), filter 800ms; }
+.an.is-hover .an-lift, .an:focus-visible .an-lift { transform: scale(1.035) translateY(-3px); }
+
+/* ambiance */
+.fd-cloud { animation: fd-cloud linear infinite; }
+@keyframes fd-cloud { from { translate: var(--from) 0; } to { translate: var(--to) 0; } }
+.fd-bird { animation: fd-bird 46s linear infinite; }
+@keyframes fd-bird { from { translate: -180px 0; } to { translate: 360px -14px; } }
+.fd-sun { animation: fd-sun 7s ease-in-out infinite alternate; transform-box: fill-box; transform-origin: center; }
+@keyframes fd-sun { to { scale: 1.1; opacity: .8; } }
+.fd-flower { animation: fd-sway 3.6s ease-in-out infinite alternate; transform-origin: 0 0; }
+@keyframes fd-sway { from { rotate: -5deg; } to { rotate: 5deg; } }
+.fd-fly { animation: fd-fly 18s ease-in-out infinite; }
+@keyframes fd-fly {
+  0%, 100% { translate: 60px 276px; }
+  20% { translate: 140px 252px; }
+  40% { translate: 210px 288px; }
+  60% { translate: 290px 262px; }
+  80% { translate: 330px 300px; }
+}
+.fd-wing { animation: fd-flap .16s ease-in-out infinite alternate; transform-origin: 0 0; }
+@keyframes fd-flap { from { scale: 1 1; } to { scale: .25 1; } }
+
+/* focus on the horse */
+.fd-dim { opacity: 0; transition: opacity 1.2s var(--ease-cine); pointer-events: none; }
+.fd.is-focus .fd-dim { opacity: 1; }
+.fd-halo { opacity: 0; transition: opacity 1.4s var(--ease-cine); pointer-events: none; }
+.fd.is-focus .fd-halo { opacity: 1; }
+.fd-rays { animation: fd-spin 60s linear infinite; }
+@keyframes fd-spin { to { rotate: 360deg; } }
+.fd.is-focus .an:not(.an-0) .an-lift { filter: saturate(.7) brightness(.86); }
+
+/* name tags */
+.fd-tag__dot { fill: var(--gold); stroke: #2f1318; stroke-width: 1.2; }
+.fd-tag__l { font: 700 10px var(--font-sans); fill: #2f1318; }
+.fd-tag__pill { opacity: 0; translate: 0 3px; transition: opacity 200ms, translate 250ms var(--ease-out-expo); }
+.fd-tag__pill rect { fill: rgba(47, 19, 24, .9); }
+.fd-tag__pill text { font: 600 10.5px var(--font-sans); fill: var(--ivory); }
+.fd-tag.is-on .fd-tag__pill { opacity: 1; translate: 0 0; }
+
+/* horse */
+.hs__sway { transform-origin: 0 0; }
+.hs__body { transform-origin: 0 -50px; animation: hs-breathe 4s ease-in-out infinite; }
+@keyframes hs-breathe { 50% { scale: 1 1.014; } }
+.hs__tail { transform-origin: -56px -90px; animation: hs-tail 3.6s ease-in-out infinite alternate; }
+@keyframes hs-tail { from { rotate: -5deg; } to { rotate: 7deg; } }
+.hs__head { transform-origin: 34px -98px; transition: transform 1.6s var(--ease-cine); }
+.hs__head-i { transform-origin: 34px -98px; animation: hs-head 6s ease-in-out infinite; }
+@keyframes hs-head { 0%, 100% { rotate: 0deg; } 25% { rotate: 3deg; } 55% { rotate: -2deg; } 80% { rotate: 2deg; } }
+.hs__ear { transition: transform 900ms var(--ease-cine); }
+.hs__ear-i { animation: hs-ear 7s ease-in-out infinite; }
+@keyframes hs-ear { 0%, 86%, 100% { rotate: 0deg; } 90% { rotate: -14deg; } 94% { rotate: 4deg; } }
+.hs__lid { transform: scaleY(0); animation: hs-blink 5.5s ease-in-out infinite; }
+@keyframes hs-blink { 0%, 94%, 100% { transform: scaleY(0); } 97% { transform: scaleY(1); } }
+.hs__stamp { transform-origin: 44px -62px; animation: hs-stamp 9s ease-in-out infinite; }
+@keyframes hs-stamp { 0%, 80%, 100% { rotate: 0deg; } 84% { rotate: -22deg; } 88% { rotate: 0deg; } 92% { rotate: -22deg; } 96% { rotate: 0deg; } }
+.hs__hind { transform-origin: -46px -62px; transition: transform 1.2s var(--ease-cine); }
+.hs__zzz text { opacity: 0; }
+.hs__ring { opacity: 0; transform-box: fill-box; transform-origin: center; }
+.fd.is-lock .hs__ring { animation: hs-ring 1.1s ease-out 2; }
+@keyframes hs-ring { 0% { opacity: 0; scale: .4; } 20% { opacity: 1; } 100% { opacity: 0; scale: 2.6; } }
+
+.an-0.is-settle .hs__head, .an-0.is-sleep .hs__head { transform: rotate(8deg); }
+.an-0.is-sleep .hs__head { transform: rotate(14deg); }
+.an-0.is-settle .hs__head-i { animation-duration: 12s; }
+.an-0.is-sleep .hs__head-i { animation: none; }
+.an-0.is-sleep .hs__ear { transform: rotate(26deg); }
+.an-0.is-sleep .hs__lid { animation: none; transform: scaleY(1); transition: transform 900ms var(--ease-cine); }
+.an-0.is-sleep .hs__lash { opacity: 1; }
+.hs__lash { opacity: 0; }
+.an-0.is-sleep .hs__hind { transform: rotate(-9deg); }
+.an-0.is-sleep .hs__sway { animation: hs-sway 5.5s ease-in-out infinite; }
+@keyframes hs-sway { 0%, 100% { rotate: -1.1deg; } 50% { rotate: 1.2deg; } }
+.an-0.is-sleep .hs__body { animation-duration: 7s; }
+.an-0.is-sleep .hs__tail { animation-duration: 8s; }
+.an-0.is-sleep .hs__stamp { animation: none; }
+.an-0.is-sleep .hs__zzz text { animation: hs-zzz 3.2s ease-in-out infinite; }
+@keyframes hs-zzz {
+  0% { opacity: 0; translate: 0 8px; }
+  30% { opacity: 1; }
+  100% { opacity: 0; translate: 14px -20px; }
+}
+.an-0.is-hover:not(.is-sleep) .hs__head { transform: rotate(-6deg); }
+.an-0.is-hover:not(.is-sleep) .hs__ear-i { animation-duration: 1.6s; }
+
+/* dog */
+.dg__tail-i { animation: dg-wag .5s ease-in-out infinite alternate; }
+@keyframes dg-wag { from { rotate: -14deg; } to { rotate: 18deg; } }
+.dg__torso { transform-origin: 0 -14px; animation: dg-breathe 1s ease-in-out infinite; }
+@keyframes dg-breathe { 50% { scale: 1 1.03; } }
+.dg__head-i { animation: dg-head 5s ease-in-out infinite; }
+@keyframes dg-head { 0%, 100% { rotate: 0deg; } 30% { rotate: 3deg; } 60% { rotate: -2deg; } }
+.dg__ear { animation: dg-ear 4.2s ease-in-out infinite; }
+@keyframes dg-ear { 0%, 80%, 100% { rotate: 0deg; } 86% { rotate: 9deg; } 92% { rotate: -3deg; } }
+.dg__tongue { transform-origin: -64px -44px; animation: dg-pant .55s ease-in-out infinite alternate; }
+@keyframes dg-pant { to { scale: 1 1.18; } }
+.an-1.is-hover .dg__tail-i { animation-duration: .2s; }
+.an-1.is-hover .dg__head { transform: rotate(-5deg); transition: transform 250ms; }
+.dg__flip { transition: transform 150ms; }
+.an-1.is-flee .dg__flip { transform: scaleX(-1); transition: transform 120ms 380ms; }
+.an-1.is-flee .dg__slide { animation: dg-run 1.9s cubic-bezier(.45, 0, .85, .7) both; }
+@keyframes dg-run {
+  0% { translate: 0 0; }
+  8% { translate: 0 -14px; }
+  16%, 22% { translate: 0 0; }
+  100% { translate: 400px 0; }
+}
+.an-1.is-flee .dg__bounce { animation: dg-bob .16s ease-in-out .5s infinite alternate; }
+@keyframes dg-bob { to { translate: 0 -5px; } }
+.an-1.is-flee .dg__leg--a { animation: dg-leg .16s ease-in-out .45s infinite alternate; }
+.an-1.is-flee .dg__leg--b { animation: dg-leg .16s ease-in-out .45s infinite alternate-reverse; }
+@keyframes dg-leg { from { rotate: -34deg; } to { rotate: 34deg; } }
+.an-1.is-flee .dg__tail-i { animation-duration: .16s; }
+
+/* cat */
+.ct__tail-i { animation: ct-tail 3.2s ease-in-out infinite; }
+@keyframes ct-tail { 0%, 100% { rotate: -6deg; } 50% { rotate: 10deg; } }
+.ct__head-i { animation: ct-look 10s ease-in-out infinite; }
+@keyframes ct-look {
+  0%, 12% { rotate: 0deg; translate: 0 0; }
+  20%, 30% { rotate: -9deg; translate: 0 0; }
+  40%, 48% { rotate: 8deg; translate: 0 0; }
+  56% { rotate: 0deg; translate: 0 0; }
+  62%, 76% { rotate: 24deg; translate: 3px 6px; }
+  84%, 100% { rotate: 0deg; translate: 0 0; }
+}
+.ct__paw { animation: ct-lick 10s ease-in-out infinite; }
+@keyframes ct-lick {
+  0%, 60%, 80%, 100% { rotate: 0deg; }
+  66%, 74% { rotate: -58deg; }
+}
+.ct__pupil { animation: ct-pupil 10s ease-in-out infinite; }
+@keyframes ct-pupil { 0%, 12% { translate: 0 0; } 20%, 30% { translate: -1.6px 0; } 40%, 48% { translate: 1.6px 0; } 56%, 100% { translate: 0 0; } }
+.ct__eyes { transform-origin: 40px -46px; animation: ct-blink 6s ease-in-out infinite; }
+@keyframes ct-blink { 0%, 94%, 100% { scale: 1 1; } 97% { scale: 1 .1; } }
+.an-2.is-hover .ct__head { transform: rotate(-6deg); transition: transform 250ms; }
+.an-2.is-hover .ct__tail-i { animation-duration: 1.1s; }
+.ct__flip { transition: transform 150ms; }
+.an-2.is-flee .ct__head-i, .an-2.is-flee .ct__paw { animation: none; }
+.an-2.is-flee .ct__flip { transform: scaleX(-1); transition: transform 400ms 300ms; }
+.an-2.is-flee .ct__slide { animation: ct-walk 2.9s ease-in-out .6s both; }
+@keyframes ct-walk { to { translate: -200px 0; } }
+.an-2.is-flee .ct__bounce { animation: ct-bob .42s ease-in-out .6s infinite alternate; }
+@keyframes ct-bob { to { translate: 0 -1.6px; } }
+.an-2.is-flee .ct__leg--a { animation: ct-leg .42s ease-in-out .6s infinite alternate; }
+.an-2.is-flee .ct__leg--b { animation: ct-leg .42s ease-in-out .6s infinite alternate-reverse; }
+@keyframes ct-leg { from { rotate: -22deg; } to { rotate: 22deg; } }
+.an-2.is-flee .ct__tail-i { animation-duration: 1.2s; }
+
+/* rabbit */
+.rb__ear--a { animation: rb-ear 5s ease-in-out infinite; }
+.rb__ear--b { animation: rb-ear 5s ease-in-out -1.2s infinite; }
+@keyframes rb-ear { 0%, 70%, 100% { rotate: 0deg; } 76% { rotate: -9deg; } 82% { rotate: 5deg; } 90% { rotate: 0deg; } }
+.rb__nose { transform-box: fill-box; transform-origin: center; animation: rb-nose .5s ease-in-out infinite alternate; }
+@keyframes rb-nose { to { scale: 1.35; } }
+.rb__hop { transform-origin: 0 0; animation: rb-idle 8s ease-in-out infinite; }
+@keyframes rb-idle {
+  0%, 72%, 100% { transform: translateY(0) scale(1, 1); }
+  76% { transform: translateY(0) scale(1.05, .93); }
+  80% { transform: translateY(-14px) scale(.96, 1.06); }
+  86% { transform: translateY(0) scale(1.05, .93); }
+  90% { transform: translateY(-10px) scale(.97, 1.04); }
+  95% { transform: translateY(0) scale(1.04, .95); }
+}
+.an-3.is-hover .rb__ears { transform: rotate(-5deg) scaleY(1.07); transition: transform 250ms; }
+.an-3.is-flee .rb__hop { animation: rb-jump .7s linear .25s 3 both; }
+@keyframes rb-jump {
+  0% { transform: translateY(0) scale(1.08, .88); animation-timing-function: cubic-bezier(.2, .7, .4, 1); }
+  45% { transform: translateY(-34px) scale(.92, 1.12); animation-timing-function: cubic-bezier(.6, 0, .8, .4); }
+  100% { transform: translateY(0) scale(1.06, .9); }
+}
+.an-3.is-flee .rb__slide { animation: rb-run 2.1s ease-in-out .25s both; }
+@keyframes rb-run {
+  0% { translate: 0 0; opacity: 1; }
+  88% { opacity: 1; }
+  100% { translate: 112px 6px; opacity: 0; }
+}
+.an.is-flee .an-shadow { opacity: 0; transition: opacity 500ms 250ms; }
+.an.is-flee .an-glow { opacity: 0; }
+
+/* bush */
+.bush__ears { translate: 0 32px; transition: translate .4s; }
+.fd.rb-gone .bush__ears { animation: bush-peek 7s ease-in-out 1s infinite; }
+@keyframes bush-peek {
+  0%, 62%, 100% { translate: 0 32px; }
+  68%, 80% { translate: 0 0; }
+  74% { translate: 0 0; rotate: 6deg; }
+}
+.fd:has(.an-3.is-flee) .bush__leaves { animation: bush-shake .4s ease-in-out 1.8s 2; transform-origin: 0 0; }
+@keyframes bush-shake { 25% { rotate: -1.6deg; } 75% { rotate: 1.6deg; } }

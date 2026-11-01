@@ -1,0 +1,153 @@
+/* ===== Gift: a personal message, staged in the dark ===== */
+.gf { align-items: stretch; gap: var(--s-4); }
+.gf .story__back { align-self: flex-start; }
+.gf-head { display: flex; flex-direction: column; align-items: center; gap: var(--s-2); text-align: center; transition: opacity 1400ms ease; }
+.gf .title { color: var(--ivory); }
+.gf-sr { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.gf[data-phase='away'] .gf-head, .gf[data-phase='extra'] .gf-head { opacity: 0; pointer-events: none; }
+.gf.is-still .gf-head { opacity: 1; }
+
+/* the lamp: moves from one paragraph to the next, then opens up for the last sentence */
+.story.gf > .gf-light {
+  position: fixed; inset: -25%; z-index: 0; pointer-events: none; opacity: 0;
+  background: radial-gradient(38% 30% at 50% 50%, rgba(217, 183, 122, 0.22), rgba(217, 183, 122, 0.06) 55%, transparent 75%);
+  transform: translate3d(-22%, -26%, 0); transition: transform 2800ms var(--ease-cine), opacity 1800ms ease;
+  animation: gf-light-in 2200ms ease 300ms forwards;
+}
+.gf[data-act='2'] > .gf-light { transform: translate3d(18%, 2%, 0); }
+.gf[data-act='3'] > .gf-light { transform: translate3d(-4%, 22%, 0) scale(1.1); }
+.gf[data-phase='away'] > .gf-light { transform: translate3d(0, 0, 0) scale(1.4); transition-duration: 2200ms; }
+.gf[data-phase='extra'] > .gf-light { transform: translate3d(0, -4%, 0) scale(1.2); transition-duration: 2600ms; }
+@keyframes gf-light-in { to { opacity: 1; } }
+
+/* very slow push-in, like a camera drifting toward the text */
+.gf-stage { position: relative; display: grid; align-items: center; min-height: min(58vh, 30rem); animation: gf-cam 50s ease-out forwards; }
+@keyframes gf-cam { to { transform: scale(1.035) translateY(-6px); } }
+.gf[data-phase='extra'] .gf-stage { min-height: min(40vh, 20rem); }
+.gf-msg, .gf-extra { grid-area: 1 / 1; }
+
+/* ----- part 1: three paragraphs along a thread of light ----- */
+.gf-msg { position: relative; align-self: start; display: flex; flex-direction: column; gap: 1.7rem; padding-left: 1.5rem; }
+.gf-act { position: relative; display: block; transition: opacity 1600ms ease; }
+.gf-act.is-past { opacity: 0.58; }
+.gf-act::before {
+  content: ''; position: absolute; left: -1.5rem; top: 0.45rem; bottom: 0; width: 1px; transform-origin: 50% 0;
+  background: linear-gradient(180deg, var(--gold), rgba(217, 183, 122, 0.22)); animation: gf-seg var(--reveal, 2s) linear backwards; transition: bottom 700ms ease;
+}
+.gf-act.is-past::before { bottom: -1.7rem; }
+@keyframes gf-seg { from { transform: scaleY(0); } }
+.gf-node {
+  position: absolute; left: calc(-1.5rem - 2.5px); top: 0.55rem; width: 6px; height: 6px; background: var(--gold); transform: rotate(45deg);
+  box-shadow: 0 0 10px 2px rgba(217, 183, 122, 0.7); animation: gf-node 900ms var(--ease-out-expo) backwards;
+}
+@keyframes gf-node { from { opacity: 0; scale: 0; } }
+
+.gf-p { margin: 0; font-family: var(--font-serif); color: var(--ivory); line-height: 1.38; text-wrap: pretty; }
+.gf-wo { position: relative; display: inline-block; }
+.gf-wi { display: inline-block; --wc: var(--ivory); }
+.gf-wo.is-em .gf-wi { --wc: #f3dca4; color: var(--wc); }
+.gf-wo.is-em::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: 0.04em; height: 1px; transform-origin: 0 50%; transform: scaleX(0);
+  background: linear-gradient(90deg, var(--gold), rgba(217, 183, 122, 0)); animation: gf-under 1000ms var(--ease-out-expo) calc(var(--d, 0ms) + 650ms) forwards;
+}
+@keyframes gf-under { to { transform: scaleX(1); } }
+
+/* I: words rise out of a mask */
+.gf-act--first .gf-p { font-size: clamp(1.5rem, 6.1vw, 1.9rem); line-height: 1.3; }
+.gf-act--first .gf-wo { overflow: hidden; vertical-align: bottom; padding-bottom: 0.18em; margin-bottom: -0.18em; }
+.gf-act--first .gf-wi { transform: translateY(112%); animation: gf-rise 950ms var(--ease-out-expo) forwards; }
+@keyframes gf-rise { to { transform: none; } }
+
+/* II: set back, italic, each word lit by a light that cools down */
+.gf-act--middle { padding-left: 0.9rem; }
+.gf-act--middle .gf-p { font-style: italic; font-size: clamp(1.28rem, 5.1vw, 1.6rem); }
+.gf-act--middle .gf-wi { opacity: 0; animation: gf-glow 1500ms ease-out forwards; }
+@keyframes gf-glow {
+  0% { opacity: 0; color: #f6dfae; text-shadow: 0 0 0 rgba(217, 183, 122, 0); }
+  28% { opacity: 1; color: #f6dfae; text-shadow: 0 0 20px rgba(217, 183, 122, 0.95); }
+  100% { opacity: 1; color: var(--wc); text-shadow: 0 0 0 rgba(217, 183, 122, 0); }
+}
+
+/* III: the short one settles in, from slightly too large */
+.gf-act--last .gf-p { font-size: clamp(1.4rem, 5.6vw, 1.75rem); }
+.gf-act--last .gf-wi { opacity: 0; transform-origin: 50% 100%; animation: gf-settle 1200ms var(--ease-out-expo) forwards; }
+@keyframes gf-settle { from { opacity: 0; transform: translateY(0.5em) scale(1.08); } to { opacity: 1; transform: none; } }
+
+/* part 1 dissolves, paragraph by paragraph */
+.gf[data-phase='away'] .gf-act { animation: gf-away 1300ms var(--ease-cine) calc(var(--k, 0) * 150ms) forwards; }
+@keyframes gf-away { to { opacity: 0; transform: translateY(-28px); filter: blur(6px); } }
+
+/* ----- part 2: one sentence, between two lines of light ----- */
+.gf-extra { position: relative; display: flex; justify-content: center; align-items: center; padding: 3.4rem 0; text-align: center; }
+.gf-extra .gf-p { max-width: 27rem; margin-inline: auto; font-style: italic; font-size: clamp(1.4rem, 5.6vw, 1.8rem); line-height: 1.44; }
+.gf-extra .gf-wi { opacity: 0; animation: gf-wave 1500ms ease-out forwards; }
+@keyframes gf-wave {
+  0% { opacity: 0; transform: translateY(0.45em); color: #fff4d6; text-shadow: 0 0 0 rgba(255, 226, 160, 0); }
+  32% { opacity: 1; transform: none; color: #fff4d6; text-shadow: 0 0 24px rgba(255, 226, 160, 0.95), 0 0 6px rgba(255, 240, 200, 0.8); }
+  100% { opacity: 1; transform: none; color: var(--wc); text-shadow: 0 0 0 rgba(255, 226, 160, 0); }
+}
+.gf-ln {
+  position: absolute; left: 0; right: 0; top: 50%; width: min(100%, 26rem); height: 1px; margin-inline: auto; scale: 0 1;
+  background: linear-gradient(90deg, transparent, #f6dfae 22%, #fff6df 50%, #f6dfae 78%, transparent); box-shadow: 0 0 12px 1px rgba(217, 183, 122, 0.55);
+  animation: gf-draw 1000ms var(--ease-out-expo) 100ms forwards, gf-part-t 1500ms var(--ease-cine) 1000ms forwards;
+}
+.gf-ln--b { animation: gf-draw 1000ms var(--ease-out-expo) 100ms forwards, gf-part-b 1500ms var(--ease-cine) 1000ms forwards; }
+.gf-ln::after { content: ''; position: absolute; inset: -3px 0; background: inherit; filter: blur(4px); opacity: 0; }
+.gf.is-done .gf-ln::after { animation: gf-pulse 3.4s ease-in-out infinite; }
+@keyframes gf-draw { to { scale: 1 1; } }
+@keyframes gf-part-t { to { translate: 0 calc(var(--h, 8rem) / -2 - 1.7rem); } }
+@keyframes gf-part-b { to { translate: 0 calc(var(--h, 8rem) / 2 + 1.7rem); } }
+@keyframes gf-pulse { 0%, 100% { opacity: 0; } 50% { opacity: 0.9; } }
+.gf-flare {
+  position: absolute; top: 50%; left: 0; width: 11rem; height: calc(var(--h, 8rem) + 6rem); translate: -50% -50%; border-radius: 50%; pointer-events: none; opacity: 0;
+  background: radial-gradient(closest-side, rgba(255, 232, 178, 0.5), rgba(217, 183, 122, 0.16) 58%, transparent); filter: blur(10px); mix-blend-mode: screen;
+  animation: gf-flare var(--span, 4s) cubic-bezier(0.35, 0.1, 0.3, 1) var(--lead, 1.9s) forwards;
+}
+@keyframes gf-flare { 0% { opacity: 0; left: 0; } 15%, 80% { opacity: 0.95; } 100% { opacity: 0; left: 100%; } }
+
+/* the end button appears like the last light in the room */
+.gf-cta { display: flex; justify-content: center; padding-top: var(--s-2); animation: gf-cta 1500ms var(--ease-out-expo) backwards; }
+@keyframes gf-cta { from { opacity: 0; transform: translateY(14px); } }
+.gf-cta .btn { position: relative; overflow: hidden; min-width: 12rem; box-shadow: 0 0 0 1px rgba(217, 183, 122, 0.35), 0 10px 28px -10px rgba(0, 0, 0, 0.55), 0 0 34px rgba(217, 183, 122, 0.18); }
+.gf-cta .btn::after {
+  content: ''; position: absolute; inset: 0; pointer-events: none; transform: translateX(-130%);
+  background: linear-gradient(105deg, transparent 35%, rgba(217, 183, 122, 0.55) 50%, transparent 65%); animation: gf-glint 1500ms ease-out 900ms forwards;
+}
+@keyframes gf-glint { to { transform: translateX(130%); } }
+
+/* a tap shows everything of the current part at once */
+.gf.is-skip .gf-wi, .gf.is-skip .gf-act::before, .gf.is-skip .gf-node, .gf.is-skip .gf-wo::after, .gf.is-skip .gf-ln, .gf.is-skip .gf-flare { animation-duration: 1ms !important; animation-delay: 0s !important; }
+.gf.is-skip .gf-act { transition-duration: 1ms; }
+
+/* ----- leaving: the sentence lifts, a single point of light opens into the final scene ----- */
+.gf.is-leaving > .story__back, .gf.is-leaving .gf-head, .gf.is-leaving .gf-cta { opacity: 0; transition: opacity 500ms ease; pointer-events: none; }
+.gf.is-leaving .gf-extra, .gf.is-leaving .gf-msg { animation: gf-lift 1000ms var(--ease-cine) forwards; }
+@keyframes gf-lift { to { opacity: 0; transform: translateY(-46px) scale(0.985); filter: blur(4px); } }
+.gf.is-leaving > .gf-light { transform: translate3d(0, 0, 0) scale(1.7); transition-duration: 1200ms; }
+.gf-out { position: fixed; inset: 0; z-index: 150; pointer-events: none; display: grid; place-items: center; overflow: hidden; }
+.gf-out::before { content: ''; position: absolute; inset: 0; opacity: 0; background: var(--night-deep); animation: gf-out-bg 760ms ease-in 420ms forwards; }
+@keyframes gf-out-bg { to { opacity: 1; } }
+.gf-out__ring {
+  position: absolute; left: 50%; top: 50%; width: 20px; height: 20px; margin: -10px 0 0 -10px; border-radius: 50%; opacity: 0;
+  background: radial-gradient(circle, transparent 60%, rgba(246, 223, 174, 0.85) 66%, rgba(217, 183, 122, 0.25) 72%, transparent 78%); animation: gf-ring 1300ms var(--ease-out-expo) 120ms forwards;
+}
+@keyframes gf-ring { 0% { opacity: 1; scale: 0.3; } 100% { opacity: 0; scale: 90; } }
+.gf-out__star {
+  position: relative; width: 6px; height: 6px; border-radius: 50%; background: #fff4dc; opacity: 0;
+  box-shadow: 0 0 10px 3px rgba(255, 236, 200, 0.85), 0 0 40px 12px rgba(217, 183, 122, 0.45); animation: gf-star 900ms var(--ease-out-expo) 800ms forwards;
+}
+@keyframes gf-star { from { opacity: 0; transform: scale(0.2); } to { opacity: 1; transform: scale(1); } }
+
+/* still mode: everything shown at once, one under the other */
+.gf.is-still .gf-stage { display: flex; flex-direction: column; gap: 1.5rem; animation: none; }
+.gf.is-still .gf-extra { padding: 1rem 0; }
+.gf.is-still .gf-ln { display: none; }
+@media (prefers-reduced-motion: reduce) {
+  .gf-stage { animation: none; }
+  .story.gf > .gf-light { animation: none; opacity: 1; transition: none; }
+  .gf-wi, .gf-act::before, .gf-node, .gf-wo::after, .gf-ln, .gf-flare, .gf-cta, .gf-cta .btn::after, .gf-out::before, .gf-out__ring, .gf-out__star { animation-duration: 1ms !important; animation-delay: 0s !important; }
+  .gf-act, .gf-head { transition: none; }
+  .gf-ln::after { animation: none !important; }
+}
+[data-perf='low'] .gf-flare { filter: none; }
+[data-perf='low'] .gf-stage { animation: none; }

@@ -1,0 +1,53 @@
+/* Réponses : deux choix côte à côte (question 2) et illustrations de fond (question 3) */
+.answers--duo { grid-template-columns: 1fr 1fr; gap: var(--s-3); }
+.answers--duo .answer {
+  min-height: 5.5rem;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--s-2);
+  text-align: center;
+  font: 500 1.35rem var(--font-serif);
+}
+.answers--duo .answer__text { flex: none; }
+.answers--duo .answer__icon { position: absolute; top: 10px; right: 10px; }
+.answers--duo .answer { position: relative; }
+
+.answer--art {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  --tone: var(--rose);
+  background: linear-gradient(100deg, var(--surface) 45%, color-mix(in srgb, var(--tone) 13%, var(--surface)) 100%);
+}
+.answer--art.art-computer { --tone: #4f6a9a; }
+.answer--art.art-network { --tone: #3c8480; }
+.answer--art.art-servers { --tone: #7a5a9a; }
+.answer--art.art-telecom { --tone: #c0794f; }
+.answer--art:hover:not(:disabled) { border-color: var(--tone); }
+.answer--art > :not(.answer__art) { position: relative; z-index: 1; }
+.answer--art .answer__text { padding-right: 5.5rem; }
+.answer__art {
+  position: absolute;
+  z-index: 0;
+  right: 0.6rem;
+  top: 50%;
+  width: 6.5rem;
+  height: auto;
+  translate: 0 -50%;
+  color: var(--tone);
+  opacity: 0.3;
+  pointer-events: none;
+}
+.answer--art.answer--correct,
+.answer--art.answer--revealed { background: var(--burgundy); }
+.answer--art.answer--correct .answer__art,
+.answer--art.answer--revealed .answer__art { color: var(--ivory); opacity: 0.2; }
+.answer--art.answer--wrong { background: transparent; }
+.answer--art.answer--wrong .answer__art { opacity: 0.12; }
+.answer--art.answer--disabled .answer__art { opacity: 0.18; }
+
+@media (max-width: 420px) {
+  .answer__art { width: 4.6rem; right: 0.4rem; }
+  .answer--art .answer__text { padding-right: 4rem; }
+  .answers--duo .answer { font-size: 1.2rem; }
+}

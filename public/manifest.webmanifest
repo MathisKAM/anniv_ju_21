@@ -1,0 +1,11 @@
+{
+  "name": "Une petite surprise pour toi",
+  "short_name": "Surprise",
+  "lang": "fr",
+  "start_url": ".",
+  "scope": ".",
+  "display": "standalone",
+  "background_color": "#F7EEE6",
+  "theme_color": "#F7EEE6",
+  "icons": [{ "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }]
+}

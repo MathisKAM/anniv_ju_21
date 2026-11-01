@@ -1,0 +1,49 @@
+/* Socle commun des scènes interactives du quiz (champ, table, laboratoire) */
+.sc {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+  width: 100%;
+}
+.sc__stage {
+  position: relative;
+  border-radius: var(--r-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  isolation: isolate;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.sc__svg { display: block; width: 100%; height: auto; }
+.sc__fx { position: absolute; inset: 0; pointer-events: none; z-index: 2; }
+.sc__fx .fx { width: 100%; height: 100%; display: block; }
+
+.sc__bubble {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  top: 12px;
+  z-index: 3;
+  margin: 0;
+  padding: 8px 12px;
+  border-radius: var(--r-sm);
+  background: rgba(34, 18, 20, .74);
+  color: var(--ivory);
+  font-size: var(--fs-small);
+  text-align: center;
+  opacity: 0;
+  translate: 0 -6px;
+  transition: opacity 300ms, translate 300ms var(--ease-out-expo);
+  pointer-events: none;
+  backdrop-filter: blur(4px);
+}
+.sc__bubble.is-on { opacity: 1; translate: 0 0; }
+
+.feedback { scroll-margin-block: 20px; }
+.sc [role='button'] { outline: none; cursor: pointer; }
+.sc [role='button'][aria-disabled='true'] { cursor: default; }
+
+@media (prefers-reduced-motion: reduce) {
+  .sc, .sc * { animation: none !important; transition: none !important; }
+}

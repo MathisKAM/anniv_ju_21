@@ -1,0 +1,13 @@
+/* Jeu de mémoire : cartes photo */
+.memory { max-width: 36rem; gap: var(--s-2); }
+.mcard { aspect-ratio: 4 / 5; }
+.mcard__front { padding: 0; overflow: hidden; background: var(--surface); }
+.mcard__photo { width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; display: block; user-select: none; -webkit-user-drag: none; }
+/* A filter on the flipping element flattens the 3D scene and hides the front face: the shadow lives on the parent. */
+.mcard { filter: drop-shadow(0 8px 8px rgba(52, 39, 42, .18)); }
+.mcard .mcard__inner { filter: none; }
+.mcard__face { backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+
+@media (max-width: 479px) {
+  .memory { grid-template-columns: repeat(2, 1fr); max-width: 17rem; }
+}
